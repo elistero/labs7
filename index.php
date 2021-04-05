@@ -1,43 +1,40 @@
-<?php
+﻿<?php
 
-class A
-{
-    protected $x;
+use Krauskeite\MyLog;
+use Krauskeite\QuEquation;
 
-    public function line_equation($a, $b)
-    {
-        if ($a != 0) {
-            return $this->x = (-$b) / $a;
-        }
-        return null;
+include "core/EquationInterface.php";
+include "core/LogAbstract.php";
+include "core/LogInterface.php";
+include "Krauskeite/MyLog.php";
+include "Krauskeite/Equation.php";
+include "Krauskeite/QuEquation.php";
+include "Krauskeite/Exception.php";
+
+ini_set("display_errors", 1);
+error_reporting(-1);
+
+try {
+    $b = new QuEquation();
+    $values = array();
+
+    for ($i = 1; $i < 4; $i++) {
+        echo "Введите " . $i . " аргумент: ";
+        $values[] = readline();
     }
+    $va = $values[0];
+    $vb = $values[1];
+    $vc = $values[2];
+
+    MyLog::log("Введено уравнение " . $va . "x^2 + " . $vb . "x + " . $vc . " = 0");
+    $x = $b->solve($va, $vb, $vc);
+
+    $str = implode(", ", $x);
+    MyLog::log("Корни уравнения: " . $str);
+} catch (Exception $e) {
+    MyLog::log($e->getMessage());
 }
 
-class B extends A
-{
-    public function disclamer($a, $b, $c)
-    {
-        return ($b * $b) - 4 * $a * $c;
-    }
+MyLog::write();
 
-    public function quadratic_equation($a, $b, $c)
-    {
-        If ($a === 0) {
-            return parent::line_equation($b, $c);
-        }
-        $d = $this->disclamer($a, $b, $c);
-        if ($d > 0) {
-            $eg = sqrt($d);
-            return $this->x = array((-$b - $eg) / (2 * $a), (-$b + $eg) / (2 * $a));
-        }
-        if ($d === 0) {
-            return $this->x = array(-$b / (2 * $a));
-        }
-        return null;
-    }
-}
-
-$aclass = new A();
-print_r($aclass->line_equation(4, 5));
-$bclass = new B();
-print_r($bclass->quadratic_equation(0, 6, 7));
+?>
